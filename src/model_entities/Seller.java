@@ -45,6 +45,13 @@ public class Seller implements Serializable{
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+    public Department getDepartment() {
+        return department;
+    }
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     public Double getBaseSalary() {
         return baseSalary;
     }
@@ -69,11 +76,11 @@ public class Seller implements Serializable{
     }
     @Override
     public String toString() {
-        return "Seller " +
-                "id =" + id +
-                ", name =  " + name +
-                ", email = " + email +
-                ", birthDate =" + birthDate +
-                ", baseSalary =" + baseSalary;
+        return "Seller" +
+                "id=" + id +
+                ", name=" + name +
+                ", email=" + email +
+                ", birthDate=" + birthDate +
+                ", baseSalary=" + baseSalary;
     }
 }

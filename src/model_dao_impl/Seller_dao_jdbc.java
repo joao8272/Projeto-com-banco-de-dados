@@ -1,11 +1,24 @@
 package model_dao_impl;
 
+import db.DB;
+import db.DbException;
 import model_Dao.SellerDao;
 import model_entities.Department;
 import model_entities.Seller;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Seller_dao_jdbc implements SellerDao {
+
+    private Connection conn;
+
+    public Seller_dao_jdbc(Connection conn){
+        this.conn = conn;
+    }
     @Override
     public void insert(Seller obj) {
 
@@ -19,8 +32,41 @@ public class Seller_dao_jdbc implements SellerDao {
 
     }
     @Override
-    public Department findById(Integer id) {
-        return null;
+    public Seller findById(Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement(
+                    "SELECT seller.*, department.Name as DepartmentName "
+                            + "FROM seller INNER JOIN department "
+                            + "ON seller.DepartmentId = department.id "
+                            + "WHERE seller.id = ?");
+
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            if(rs.next()){
+                Department dep = new Department();
+                dep.setId(rs.getInt("DepartmentId"));
+                dep.setName(rs.getString("DepartmentName"));
+                Seller obj = new Seller();
+                obj.setId(rs.getInt("Id"));
+                obj.setName(rs.getString("Name"));
+                obj.setEmail(rs.getString("Email"));
+                obj.setBaseSalary(rs.getDouble("BaseSalary"));
+                obj.setBirthDate(rs.getObject("BirthDate", LocalDate.class));
+                obj.setDepartment(dep);
+                return obj;
+            }
+            return null;
+        }
+        catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+
     }
     @Override
     public List<Seller> findAll() {
