@@ -62,7 +62,7 @@ public class Seller_dao_jdbc implements SellerDao {
     }
 
     private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
-        Seller obj =new Seller();
+        Seller obj = new Seller();
         obj.setId(rs.getInt("Id"));
         obj.setName(rs.getString("Name"));
         obj.setEmail(rs.getString("Email"));
