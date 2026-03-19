@@ -5,10 +5,13 @@ import model_Dao.SellerDao;
 import model_entities.Department;
 import model_entities.Seller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 public class Program {
     public static void main(String[] args){
+        Locale.setDefault(Locale.US);
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
@@ -27,5 +30,9 @@ public class Program {
         for(Seller obj : list){
             System.out.println(obj);
         }
+        System.out.println("\n=== TEST 4: seller insert ====");
+        Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", LocalDate.of(1990, 5, 15), 4000.0, department);
+        sellerDao.insert(newSeller);
+        System.out.println("Inserted! New id = " + newSeller.getId());
     }
 }
